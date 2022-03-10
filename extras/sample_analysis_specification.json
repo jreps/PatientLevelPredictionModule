@@ -1,0 +1,139 @@
+{
+  "analyses": [
+    {
+      "targetId": 1,
+      "outcomeId": 2,
+      "restrictPlpDataSettings": {
+        "studyStartDate": "",
+        "studyEndDate": "",
+        "firstExposureOnly": false,
+        "washoutPeriod": 0,
+        "sampleSize": null,
+        "attr_class": "restrictPlpDataSettings"
+      },
+      "covariateSettings": [
+        {
+          "temporal": false,
+          "DemographicsGender": true,
+          "DemographicsAge": true,
+          "ConditionOccurrenceLongTerm": true,
+          "longTermStartDays": -365,
+          "mediumTermStartDays": -180,
+          "shortTermStartDays": -30,
+          "endDays": 0,
+          "includedCovariateConceptIds": [],
+          "addDescendantsToInclude": false,
+          "excludedCovariateConceptIds": [],
+          "addDescendantsToExclude": false,
+          "includedCovariateIds": [],
+          "attr_fun": "getDbDefaultCovariateData",
+          "attr_class": "covariateSettings"
+        }
+      ],
+      "populationSettings": {
+        "binary": true,
+        "includeAllOutcomes": true,
+        "firstExposureOnly": true,
+        "washoutPeriod": 0,
+        "removeSubjectsWithPriorOutcome": true,
+        "priorOutcomeLookback": 99999,
+        "requireTimeAtRisk": false,
+        "minTimeAtRisk": 364,
+        "riskWindowStart": 1,
+        "startAnchor": "cohort start",
+        "riskWindowEnd": 365,
+        "endAnchor": "cohort start",
+        "restrictTarToCohortEnd": false,
+        "attr_class": "populationSettings"
+      },
+      "sampleSettings": [
+        {
+          "numberOutcomestoNonOutcomes": 1,
+          "sampleSeed": 2274,
+          "attr_fun": "sameData",
+          "attr_class": "sampleSettings"
+        }
+      ],
+      "featureEngineeringSettings": [
+        {
+          "attr_fun": "sameData",
+          "attr_class": "featureEngineeringSettings"
+        }
+      ],
+      "preprocessSettings": {
+        "minFraction": 0.001,
+        "normalize": true,
+        "removeRedundancy": true,
+        "attr_class": "preprocessSettings"
+      },
+      "modelSettings": {
+        "fitFunction": "fitCyclopsModel",
+        "param": {
+          "priorParams": {
+            "priorType": "laplace",
+            "forceIntercept": false,
+            "variance": 0.01,
+            "exclude": 0
+          },
+          "includeCovariateIds": null,
+          "upperLimit": 20,
+          "lowerLimit": 0.01,
+          "attr_settings": {
+            "priorfunction": "Cyclops::createPrior",
+            "selectorType": "byPid",
+            "crossValidationInPrior": true,
+            "modelType": "logistic",
+            "addIntercept": true,
+            "useControl": true,
+            "seed": 36381519,
+            "name": "Lasso Logistic Regression",
+            "threads": -1,
+            "tolerance": 2e-06,
+            "cvRepetitions": 1,
+            "maxIterations": 3000
+          },
+          "attr_modelType": "binary",
+          "attr_saveType": "RtoJson"
+        },
+        "attr_class": "modelSettings"
+      },
+      "executeSettings": {
+        "runSplitData": true,
+        "runSampleData": true,
+        "runfeatureEngineering": true,
+        "runPreprocessData": true,
+        "runModelDevelopment": true,
+        "runCovariateSummary": true,
+        "attr_class": "executeSettings"
+      },
+      "attr_class": "modelDesign"
+    }
+  ],
+  "splitSettings": {
+    "test": 0.25,
+    "train": 0.75,
+    "seed": 123,
+    "nfold": 3,
+    "attributes": {
+      "names": ["test", "train", "seed", "nfold"],
+      "fun": "randomSplitter",
+      "class": "splitSettings"
+    }
+  },
+  "logSettings": {
+    "verbosity": "TRACE",
+    "logName": "plp_module"
+  },
+  "databaseDetails": {
+    "connectionDetails": "Eunomia::getEunomiaConnectionDetails()",
+    "cdmDatabaseSchema": "main",
+    "cdmDatabaseName": "eunomia",
+    "tempEmulationSchema": "main",
+    "cohortDatabaseSchema": "main",
+    "cohortTable": "cohort",
+    "outcomeDatabaseSchema": "main",
+    "outcomeTable": "cohort",
+    "cdmVersion": 5
+  },
+  "saveDirectory": "/var/folders/6s/ddvthmrj5p58pb5gchlns9ym0000gp/T//RtmpYbNDtx/plp"
+}
