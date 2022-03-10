@@ -40,9 +40,7 @@ validate <- function(jobContext) {
     stop("saveDirectory not found in job context")
   }
   
-  plpAnalysis <- PatientLevelPrediction::loadPlpAnalysesJson(jsonObject = jobContext)
-
-  invisible(plpAnalysis)
+  invisible(jobContext)
 }
 
 #' @export
