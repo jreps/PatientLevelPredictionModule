@@ -2,30 +2,16 @@
 
 # Introduction
 
-This R package contains functionality for running prediction studies using a JSON specification and the PatientLevelPrediction R package.
+This R project contains functionality for running prediction studies using a JSON specification and the PatientLevelPrediction R package.
 
-
-# Example
-
-Please see the code located in `extras/CodeToRunModule.R` for an example of using the module.
 
 # Technology
 
-PatientLevelPredictionModule is an R package.
+PatientLevelPredictionModule is an R project.
 
 # System requirements
 
 Requires R (version 3.6.0 or higher).
-
-# Getting Started
-
-1.  Make sure your R environment is properly configured. This means that Java must be installed. See [these instructions](https://ohdsi.github.io/Hades/rSetup.html) for how to configure your R environment.
-
-2.  In R, use the following commands to download and install CohortGeneratorModule:
-
-    ``` r
-    remotes::install_github("reps12/PatientLevelPredictionModule")
-    ```
 
 # User Documentation
 
@@ -45,7 +31,7 @@ CohortGeneratorModule is licensed under Apache License 2.0
 
 # Development
 
-This package is being developed in RStudio.
+This project is being developed in RStudio.
 
 ### Development status
 

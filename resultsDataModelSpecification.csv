@@ -1,0 +1,99 @@
+﻿table_name,column_name,data_type,is_required,primary_key,foreign key,empty_is_na,mincellcount,description
+cohorts,cohort_id,int,yes,yes,,no,no,a unique identifier for the cohort
+cohorts,atlas_id,bigint,no,no,,no,no,the identifier in ATLAS for the cohort
+cohorts,cohort_name,char(100),yes,no,,no,no,the name of the cohort
+cohorts,cohort_json,varchar,yes,no,,no,no,the json definition
+database_details,database_id,int,yes,yes,,no,no,a unique identifier for the database
+database_details,database_name,char(100),yes,no,,no,no,the name of the database
+database_details,database_acronym,char(20),yes,no,,no,no,an abreviated name of the database
+database_details,database_version,int,yes,no,,no,no,the version of the database
+database_details,database_desciption,char(1000),yes,no,,no,no,a description of the database
+database_details,database_type,char(20),yes,no,,no,no,"the type of database (e.g., claims or ehr)"
+tars,tar_id,int,yes,yes,,no,no,a unique identifier for the tar
+tars,tar_start_day,int,yes,no,,no,no,the number of days offset the tar_start_anchor for the time-at-risk to start
+tars,tar_start_anchor,char(20),yes,no,,no,no,whether to use the cohort start or cohort end
+tars,tar_end_day,int,yes,no,,no,no,the number of days offset the tar_end_anchor for the time-at-risk to end
+tars,tar_end_anchor,char(20),yes,no,,no,no,whether to use the cohort start or cohort end
+population_settings,population_setting_id,int,yes,yes,,no,no,a unique identifier for the population settings
+population_settings,population_settings_json,varchar,yes,no,,no,no,the json with the settings
+covariate_settings,covariate_setting_id,int,yes,yes,,no,no,a unique identifier for the covaraite settings
+covariate_settings,covariate_settings_json,varchar,yes,no,,no,no,the json with the settings
+model_settings,model_setting_id,int,yes,yes,,no,no,a unique identifier for the model settings
+model_settings,model_type,varchar(50),no,no,,no,no,the type of model 
+model_settings,model_settings_json,varchar,yes,no,,no,no,the json with the settings
+split_settings,split_setting_id,int,yes,yes,,no,no,a unique identifier for the split settings
+split_settings,split_settings_json,varchar,yes,no,,no,no,the json with the settings
+plp_data_settings,plp_data_setting_id,int,yes,yes,,no,no,a unique identifier for the plp data settings
+plp_data_settings,plp_data_settings_json,varchar,yes,no,,no,no,the json with the settings
+feature_engineering_settings,feature_engineering_setting_id,int,yes,yes,,no,no,a unique identifier for the feature engineering settings
+feature_engineering_settings,feature_engineering_settings_json,varchar,yes,no,,no,no,the json with the settings
+tidy_covariates_settings,tidy_covariates_setting_id,int,yes,yes,,no,no,a unique identifier for the tidy covariates settings
+tidy_covariates_settings,tidy_covariates_settings_json,varchar,yes,no,,no,no,the json with the settings
+sample_settings,sample_setting_id,int,yes,yes,,no,no,a unique identifier for the sample settings
+sample_settings,sample_settings_json,varchar,yes,no,,no,no,the json with the settings
+model_designs,model_design_id,int,yes,yes,,no,no,a unique identifier for the model design settings
+model_designs,target_id,int,yes,no,cohorts(cohort_id),no,no,the  identifier for the target cohort id
+model_designs,outcome_id,int,yes,no,cohorts(cohort_id),no,no,the  identifier for the outcome cohort id
+model_designs,tar_id,int,yes,no,tars(tar_id),no,no,the  identifier for the time at risk setting
+model_designs,plp_data_setting_id,int,yes,no,plp_data_settings(plp_data_setting_id),no,no,the  identifier for the plp data setting
+model_designs,population_setting_id,int,yes,no,population_settings(population_setting_id),no,no,the  identifier for the population setting
+model_designs,model_setting_id,int,yes,no,model_settings(model_setting_id),no,no,the  identifier for the model setting
+model_designs,covariate_setting_id,int,yes,no,covariate_settings(covariate_setting_id),no,no,the  identifier for the covaraite setting
+model_designs,sample_setting_id,int,yes,no,sample_settings(sample_setting_id),no,no,the  identifier for the sample setting
+model_designs,split_setting_id,int,yes,no,split_settings(split_setting_id),no,no,the  identifier for the split setting
+model_designs,feature_engineering_setting_id,int,yes,no,feature_engineering_settings(feature_engineering_setting_id),no,no,the  identifier for the feature engineering setting
+model_designs,tidy_covariates_setting_id,int,yes,no,tidy_covariates_settings(tidy_covariates_setting_id),no,no,the  identifier for the tidy covariate setting
+diagnostics,diagnostic_id,int,yes,yes,,no,no,the unique identifier for the diagnostic results
+diagnostics,model_design_id,int,yes,no,model_designs(model_design_id),no,no,the identifier for the model design
+diagnostics,database_id,imt,yes,no,databases(database_id),no,no,the identifier for the database
+diagnostics,execution_date_time,datetime2,yes,no,,no,no,the date/time the diagnostic was run
+diagnostic_summary,diagnostic_id,int,yes,no,diagnostics(diagnostic_id),no,no,the identifier for the diagnostics
+diagnostic_summary,probast_id,varchar(50),yes,no,,no,no,the probast id being diagnosed
+diagnostic_summary,result_value,varchar(50),yes,no,,no,no,the diagnostic result
+diagnostic_predictors,diagnostic_id,int,yes,no,diagnostics(diagnostic_id),no,no,the identifier for the diagnostics
+diagnostic_predictors,days_to_event,int,,,,,,
+diagnostic_predictors,outcome_at_time,int,,,,,,
+diagnostic_predictors,observed_at_start_of_day,bigint,,,,,,
+diagnostic_predictors,probast_id,varchar(50),,,,,,
+diagnostic_predictors,input_type,varchar(50),,,,,,
+diagnostic_participant,diagnostic_id,int,yes,no,diagnostics(diagnostic_id),no,no,the identifier for the diagnostics
+diagnostic_participant,design,varchar(50),,,,,,
+diagnostic_participant,metric,varchar(50),,,,,,
+diagnostic_participant,value,float,,,,,,
+diagnostic_participant,probast_id,varchar(50),,,,,,
+diagnostic_outcomes,diagnostic_id,int,yes,no,diagnostics(diagnostic_id),no,no,the identifier for the diagnostics
+diagnostic_outcomes,xvalue,int,,,,,,
+diagnostic_outcomes,outcome_percent,float,,,,,,
+diagnostic_outcomes,aggregation,varchar(50),,,,,,
+diagnostic_outcomes,probast_id,varchar(50),,,,,,
+diagnostic_outcomes,input_type,varchar(50),,,,,,
+diagnostic_designs,diagnostic_id,int,yes,no,diagnostics(diagnostic_id),no,no,the identifier for the diagnostics
+diagnostic_designs,probast_id,varchar(50),,,,,,
+diagnostic_designs,value,varchar(50),,,,,,
+models,model_id,int,yes,yes,,,,
+models,analysis_id,varchar(50),no,no,,,,
+models,model_design_id,int,yes,no,model_designs(model_design_id),,,
+models,database_id,int,yes,no,databases(database_id),,,
+models,model_type,varchar(50),no,no,,,,
+models,plp_model_file,text,yes,no,,,,
+models,train_details,varchar,no,no,,,,
+models,preprocessing,varchar,no,no,,,,
+models,execution_date_time,datetime2,no,no,,,,
+models,training_time,varchar(100),no,no,,,,
+models,intercept,int,no,no,,,,
+recalibrations,recalibration_id,int,yes,yes,,,,
+recalibrations,original_model_id,int,yes,no,models(model_id),,,
+recalibrations,recalibrated_model_id,int,yes,no,models(model_id),,,
+recalibrations,recalibration_type,varchar(15),yes,no,,,,
+recalibrations,recalibration_json,varchar,yes,no,,,,
+performances,performance_id,int,yes,yes,,,,
+performances,model_design_id,int,yes,no,model_designs(model_design_id),,,
+performances,development_database_id,int,yes,no,databases(database_id),,,
+performances,validation_database_id,int,yes,no,databases(database_id),,,
+performances,target_id,int,yes,no,cohorts(cohort_id),,,
+performances,outcome_id,int,yes,no,cohorts(cohort_id),,,
+performances,tar_id,int,yes,no,tars(tar_id),,,
+performances,plp_data_setting_id,int,yes,no,plp_data_settings(plp_data_setting_id),,,
+performances,population_setting_id,int,yes,no,population_settings(population_setting_id),,,
+performances,execution_date_time,datetime2,yes,no,,,,
+performances,plp_version,char(10),yes,no,,,,

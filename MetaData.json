@@ -1,0 +1,6 @@
+{
+  "Name": "PatientLevelPredictionModule",
+  "Version": "0.1.0",
+  "Dependencies": [],
+  "TablePrefix": "plp_"
+}
