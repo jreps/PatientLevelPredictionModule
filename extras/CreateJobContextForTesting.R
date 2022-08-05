@@ -40,11 +40,56 @@ cohortGeneratorModuleSpecifications <- createCohortGeneratorModuleSpecifications
   generateStats = TRUE
 )
 
-# Module Settings Spec ----------------------------
-analysisSpecifications <- createEmptyAnalysisSpecificiations() %>%
-  addSharedResources(createCohortSharedResource(getSampleCohortDefintionSet())) %>%
-  addModuleSpecifications(cohortGeneratorModuleSpecifications)
 
+# design the study (example below is 2 models with different Ts but same O)
+modelDesignList <- list(
+  PatientLevelPrediction::createModelDesign(
+    targetId = 1, 
+    outcomeId = 2, 
+    restrictPlpDataSettings = PatientLevelPrediction::createRestrictPlpDataSettings(), 
+    populationSettings = PatientLevelPrediction::createStudyPopulationSettings(
+      riskWindowStart = 1, 
+      riskWindowEnd = 365
+      ), 
+    covariateSettings = FeatureExtraction::createCovariateSettings(
+      useDemographicsGender = T, 
+      useDemographicsAgeGroup = T
+      ), 
+    preprocessSettings = PatientLevelPrediction::createPreprocessSettings(), 
+    modelSettings = PatientLevelPrediction::setLassoLogisticRegression(), 
+    splitSettings = PatientLevelPrediction::createDefaultSplitSetting(), 
+    runCovariateSummary = T
+    ),
+  
+  PatientLevelPrediction::createModelDesign(
+    targetId = 2, 
+    outcomeId = 2, 
+    restrictPlpDataSettings = PatientLevelPrediction::createRestrictPlpDataSettings(), 
+    populationSettings = PatientLevelPrediction::createStudyPopulationSettings(
+      riskWindowStart = 1, 
+      riskWindowEnd = 365
+    ), 
+    covariateSettings = FeatureExtraction::createCovariateSettings(
+      useDemographicsGender = T, 
+      useDemographicsAgeGroup = T
+    ), 
+    preprocessSettings = PatientLevelPrediction::createPreprocessSettings(), 
+    modelSettings = PatientLevelPrediction::setLassoLogisticRegression(), 
+    splitSettings = PatientLevelPrediction::createDefaultSplitSetting(), 
+    runCovariateSummary = T
+  )
+  
+)
+
+analysisSpecifications <- Strategus::createEmptyAnalysisSpecificiations() %>%
+  Strategus::addSharedResources(
+    createCohortSharedResource(getSampleCohortDefintionSet())
+  ) %>%
+  Strategus::addModuleSpecifications(
+    createPatientLevelPredicitonSpecifications(
+      modelDesignList = modelDesignList
+    )
+  )
 executionSettings <- Strategus::createExecutionSettings(
   connectionDetailsReference = "dummy",
   workDatabaseSchema = "main",
@@ -56,7 +101,7 @@ executionSettings <- Strategus::createExecutionSettings(
 )
 
 # Job Context ----------------------------
-module <- "CohortGeneratorModule"
+module <- "PatientLevelPredictionModule"
 moduleIndex <- 1
 moduleExecutionSettings <- executionSettings
 moduleExecutionSettings$workSubFolder <- "dummy"

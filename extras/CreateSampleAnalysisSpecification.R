@@ -21,20 +21,7 @@ modelDesign1 <- PatientLevelPrediction::createModelDesign(
   runCovariateSummary = T
   )
 
-jobContext <- PatientLevelPrediction::savePlpAnalysesJson(
-  modelDesignList = list(modelDesign1),
-  saveDirectory = NULL
-)
-
-splitSettings <- PatientLevelPrediction::createDefaultSplitSetting(
-  testFraction = 0.25, 
-  nfold = 3, 
-  splitSeed = 123
-  )
-
-splitSettings$attributes <- attributes(splitSettings)
-class(splitSettings) <- 'list'
-jobContext$splitSettings <- splitSettings
+jobContext$settings <- list(modelDesign1)
 
 jobContext$logSettings <- list(
   verbosity = 'TRACE',

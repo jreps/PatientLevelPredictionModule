@@ -47,7 +47,7 @@ execute <- function(jobContext) {
   # run the models
   PatientLevelPrediction::runMultiplePlp(
     databaseDetails = databaseDetails, 
-    modelDesignList = jobContext$settings$analyses, 
+    modelDesignList = jobContext$settings, 
     cohortDefinitions = jobContext$sharedResources$cohortDefinitions,  #wont work currently 
     saveDirectory = resultsFolder
       )
@@ -62,7 +62,7 @@ execute <- function(jobContext) {
     server = file.path(resultsFolder, "sqlite","databaseFile.sqlite")
   )
     
-  PatientLevelPrediction:::extractDatabaseToCsv(
+  PatientLevelPrediction::extractDatabaseToCsv(
     connectionDetails = sqliteConnectionDetails, 
     databaseSchemaSettings = PatientLevelPrediction::createDatabaseSchemaSettings(
       resultSchema = 'main', # sqlite settings
