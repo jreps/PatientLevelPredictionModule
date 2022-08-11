@@ -70,7 +70,8 @@ execute <- function(jobContext) {
       targetDialect = 'sqlite', 
       tempEmulationSchema = NULL
     ), 
-    csvFolder = file.path(resultsFolder, 'results')
+    csvFolder = file.path(resultsFolder, 'results'),
+    fileAppend = 'plp_'
   )
   
   # Zip the results
