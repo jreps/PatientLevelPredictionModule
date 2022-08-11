@@ -55,8 +55,6 @@ execute <- function(jobContext) {
   # Export the results
   rlang::inform("Export data to csv files")
 
-  # TODO export this from PLP
-  
   sqliteConnectionDetails <- DatabaseConnector::createConnectionDetails(
     dbms = 'sqlite',
     server = file.path(resultsFolder, "sqlite","databaseFile.sqlite")

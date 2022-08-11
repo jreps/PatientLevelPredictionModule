@@ -12,7 +12,9 @@ jobContext$moduleExecutionSettings$resultsSubFolder <- resultsfolder
 jobContext$moduleExecutionSettings$connectionDetails <- connectionDetails
 
 test_that("Run module", {
+  invisible(Eunomia::createCohorts(connectionDetails = connectionDetails))
   source("Main.R")
+  debugonce(execute)
   execute(jobContext)
   resultsFiles <- list.files(resultsfolder)
   expect_true("cg_cohort_definition.csv" %in% resultsFiles)

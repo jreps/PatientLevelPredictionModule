@@ -8,9 +8,9 @@ createPatientLevelPredictionModuleSpecifications <- function(
   
   specifications <- list(
     module = "PatientLevelPredictionModule",
-    version = "0.0.1",
+    version = "0.0.1-1",
     remoteRepo = "github.com",
-    remoteUsername = "ohdsi",
+    remoteUsername = "anthonysena",
     settings = modelDesignList
   )
   class(specifications) <- c("PatientLevelPredictionModuleSpecifications", "ModuleSpecifications")
