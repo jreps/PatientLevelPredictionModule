@@ -44,11 +44,14 @@ execute <- function(jobContext) {
     outcomeTable = jobContext$moduleExecutionSettings$cohortTableNames$cohortTable
   )
   
+  # find where cohortDefinitions are as sharedResources is a list
+  ind <- which(unlist(lapply(jobContext$sharedResources, function(x) 'cohortDefinitions' %in% names(x))))[1]
+                
   # run the models
   PatientLevelPrediction::runMultiplePlp(
     databaseDetails = databaseDetails, 
     modelDesignList = jobContext$settings, 
-    cohortDefinitions = jobContext$sharedResources$cohortDefinitions,  #wont work currently 
+    cohortDefinitions = jobContext$sharedResources[[ind]]$cohortDefinitions,
     saveDirectory = resultsFolder
       )
   
