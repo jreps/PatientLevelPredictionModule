@@ -78,7 +78,7 @@ execute <- function(jobContext) {
   # Zip the results
   OhdsiSharing::compressFolder(
     sourceFolder = file.path(resultsFolder, 'results'), 
-    targetFileName = file.path(resultsFolder, 'results.csv')
+    targetFileName = file.path(resultsFolder, 'results.zip')
   )
   
 }
