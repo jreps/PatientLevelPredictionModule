@@ -27,7 +27,8 @@ OhdsiRTools::createRenvLockFile(
   additionalRequiredPackages = c(
     "CirceR",
     "testthat",
-    "Eunomia"
+    "Eunomia",
+    "CohortGenerator"
   )
 )
 renv::init()

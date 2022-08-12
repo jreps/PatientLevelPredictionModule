@@ -1,6 +1,7 @@
 # Create a job context for testing purposes
 library(Strategus)
 library(dplyr)
+library(Eunomia)
 source("SettingsFunctions.R")
 
 # Generic Helpers ----------------------------
@@ -12,13 +13,16 @@ getModuleInfo <- function() {
 # Sample Data Helpers ----------------------------
 getSampleCohortDefintionSet <- function() {
   sampleCohorts <- CohortGenerator::createEmptyCohortDefinitionSet()
-  cohortJsonFiles <- list.files(path = system.file("testdata/name/cohorts", package = "CohortGenerator"), full.names = TRUE)
-  for (i in 1:length(cohortJsonFiles)) {
-    cohortJsonFileName <- cohortJsonFiles[i]
-    cohortName <- tools::file_path_sans_ext(basename(cohortJsonFileName))
-    cohortJson <- readChar(cohortJsonFileName, file.info(cohortJsonFileName)$size)
+  eunomiaCohorts <- CohortGenerator::readCsv(file = system.file("settings/CohortsToCreate.csv", package = "Eunomia"),
+                                             warnOnCaseMismatch = FALSE)
+  # Grab the first 3 cohorts
+  eunomiaCohorts <- eunomiaCohorts[eunomiaCohorts$cohortId <= 3,]
+  for (i in 1:nrow(eunomiaCohorts)) {
+    cohortId <- eunomiaCohorts$cohortId[i]
+    cohortName <- eunomiaCohorts$name[i]
+    cohortJson <- "{}"
     sampleCohorts <- rbind(sampleCohorts, data.frame(
-      cohortId = i,
+      cohortId = cohortId,
       cohortName = cohortName,
       cohortDefinition = cohortJson,
       stringsAsFactors = FALSE
@@ -34,18 +38,11 @@ createCohortSharedResource <- function(cohortDefinitionSet) {
   return(sharedResource)
 }
 
-# Create CohortGeneratorModule settings ---------------------------------------
-cohortGeneratorModuleSpecifications <- createCohortGeneratorModuleSpecifications(
-  incremental = FALSE,
-  generateStats = TRUE
-)
-
-
 # design the study (example below is 2 models with different Ts but same O)
 modelDesignList <- list(
   PatientLevelPrediction::createModelDesign(
     targetId = 1, 
-    outcomeId = 2, 
+    outcomeId = 3, 
     restrictPlpDataSettings = PatientLevelPrediction::createRestrictPlpDataSettings(), 
     populationSettings = PatientLevelPrediction::createStudyPopulationSettings(
       riskWindowStart = 1, 
@@ -63,7 +60,7 @@ modelDesignList <- list(
   
   PatientLevelPrediction::createModelDesign(
     targetId = 2, 
-    outcomeId = 2, 
+    outcomeId = 3, 
     restrictPlpDataSettings = PatientLevelPrediction::createRestrictPlpDataSettings(), 
     populationSettings = PatientLevelPrediction::createStudyPopulationSettings(
       riskWindowStart = 1, 
@@ -86,11 +83,11 @@ analysisSpecifications <- Strategus::createEmptyAnalysisSpecificiations() %>%
     createCohortSharedResource(getSampleCohortDefintionSet())
   ) %>%
   Strategus::addModuleSpecifications(
-    createPatientLevelPredicitonSpecifications(
+    createPatientLevelPredictionModuleSpecifications(
       modelDesignList = modelDesignList
     )
   )
-executionSettings <- Strategus::createExecutionSettings(
+executionSettings <- Strategus::createCdmExecutionSettings(
   connectionDetailsReference = "dummy",
   workDatabaseSchema = "main",
   cdmDatabaseSchema = "main",
