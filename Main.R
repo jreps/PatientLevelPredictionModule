@@ -67,7 +67,7 @@ execute <- function(jobContext) {
     connectionDetails = sqliteConnectionDetails, 
     databaseSchemaSettings = PatientLevelPrediction::createDatabaseSchemaSettings(
       resultSchema = 'main', # sqlite settings
-      stringAppendToResultSchemaTables = '', # sqlite settings
+      tablePrefix = '', # sqlite settings
       targetDialect = 'sqlite', 
       tempEmulationSchema = NULL
     ), 
