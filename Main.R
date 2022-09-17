@@ -20,6 +20,44 @@ getModuleInfo <- function() {
   return(ParallelLogger::loadSettingsFromJson("MetaData.json"))
 }
 
+getSharedResourceByClassName <- function(sharedResources, className) {
+  returnVal <- NULL
+  for (i in 1:length(sharedResources)) {
+    if (className %in% class(sharedResources[[i]])) {
+      returnVal <- sharedResources[[i]]
+      break
+    }
+  }
+  invisible(returnVal)
+}
+
+createCohortDefinitionSetFromJobContext <- function(sharedResources, settings) {
+  cohortDefinitions <- list()
+  if (length(sharedResources) <= 0) {
+    stop("No shared resources found")
+  }
+  cohortDefinitionSharedResource <- getSharedResourceByClassName(sharedResources = sharedResources, 
+                                                                 class = "CohortDefinitionSharedResources")
+  if (is.null(cohortDefinitionSharedResource)) {
+    stop("Cohort definition shared resource not found!")
+  }
+  cohortDefinitions <- cohortDefinitionSharedResource$cohortDefinitions
+  if (length(cohortDefinitions) <= 0) {
+    stop("No cohort definitions found")
+  }
+  cohortDefinitionSet <- CohortGenerator::createEmptyCohortDefinitionSet()
+  for (i in 1:length(cohortDefinitions)) {
+    cohortJson <- cohortDefinitions[[i]]$cohortDefinition
+    cohortDefinitionSet <- rbind(cohortDefinitionSet, data.frame(
+      cohortId = as.integer(cohortDefinitions[[i]]$cohortId),
+      cohortName = cohortDefinitions[[i]]$cohortName,
+      json = cohortJson,
+      stringsAsFactors = FALSE
+    ))
+  }
+  return(cohortDefinitionSet)
+}
+
 # Module methods -------------------------
 execute <- function(jobContext) {
   rlang::inform("Validating inputs")
@@ -46,20 +84,25 @@ execute <- function(jobContext) {
     connectionDetails = jobContext$moduleExecutionSettings$connectionDetails, 
     cdmDatabaseSchema = jobContext$moduleExecutionSettings$cdmDatabaseSchema,
     cohortDatabaseSchema = jobContext$moduleExecutionSettings$workDatabaseSchema,
-    cdmDatabaseName = jobContext$moduleExecutionSettings$connectionDetailsReference, 
+    cdmDatabaseName = jobContext$moduleExecutionSettings$connectionDetailsReference,
+    cdmDatabaseId = jobContext$moduleExecutionSettings$databaseId,
+    #tempEmulationSchema =  , is there s temp schema specified anywhere?
     cohortTable = jobContext$moduleExecutionSettings$cohortTableNames$cohortTable, 
     outcomeDatabaseSchema = jobContext$moduleExecutionSettings$workDatabaseSchema, 
     outcomeTable = jobContext$moduleExecutionSettings$cohortTableNames$cohortTable
   )
   
   # find where cohortDefinitions are as sharedResources is a list
-  ind <- which(unlist(lapply(jobContext$sharedResources, function(x) 'cohortDefinitions' %in% names(x))))[1]
-                
+  cohortDefinitionSet <- createCohortDefinitionSetFromJobContext(
+    sharedResources = jobContext$sharedResources,
+    settings = jobContext$settings
+    )
+             
   # run the models
   PatientLevelPrediction::runMultiplePlp(
     databaseDetails = databaseDetails, 
     modelDesignList = jobContext$settings, 
-    cohortDefinitions = jobContext$sharedResources[[ind]]$cohortDefinitions,
+    cohortDefinitions = cohortDefinitionSet,
     saveDirectory = workFolder
       )
   
