@@ -1,4 +1,4 @@
-PatientLevelPrediction 0.1.0
+PatientLevelPredictionModule 0.0.5
 =======================
 
 Initial version
