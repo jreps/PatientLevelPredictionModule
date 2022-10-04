@@ -639,13 +639,13 @@
 		},
 		"PatientLevelPrediction" : {
 			"Package" : "PatientLevelPrediction",
-			"Version" : "5.4.5",
+			"Version" : "6.0.3",
 			"Source" : "GitHub",
 			"RemoteType" : "github",
 			"RemoteHost" : "api.github.com",
 			"RemoteRepo" : "PatientLevelPrediction",
 			"RemoteUsername" : "ohdsi",
-			"RemoteRef" : "473fb1dca672bf32ef7401c0b289767c27d22c9a"
+			"RemoteRef" : "be4aed0358ce1ba656308804c90d1966e42e7d4b"
 		},
 		"CirceR" : {
 			"Package" : "CirceR",

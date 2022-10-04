@@ -123,28 +123,8 @@ execute <- function(jobContext) {
       tempEmulationSchema = NULL
     ), 
     csvFolder = file.path(workFolder, 'results'),
-    fileAppend = 'plp_'
+    fileAppend = ''
   )
-  
-  # Export the resultsDataModelSpecification.csv
-  resultsDataModel <- CohortGenerator::readCsv(
-    file = system.file(
-      "settings/resultsDataModelSpecification.csv",
-      package = "PatientLevelPrediction"
-    ),
-    warnOnCaseMismatch = FALSE
-  )
-  
-  # add the prefix to the tableName column
-  resultsDataModel$tableName <- paste0(moduleInfo$TablePrefix, resultsDataModel$tableName)
-  
-  CohortGenerator::writeCsv(
-    x = resultsDataModel,
-    file = file.path(resultsFolder, "resultsDataModelSpecification.csv"),
-    warnOnCaseMismatch = FALSE,
-    warnOnFileNameCaseMismatch = FALSE,
-    warnOnUploadRuleViolations = FALSE
-  )  
   
   # Zip the results
   rlang::inform("Zipping csv files")
