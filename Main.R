@@ -123,7 +123,7 @@ execute <- function(jobContext) {
       tempEmulationSchema = NULL
     ), 
     csvFolder = file.path(workFolder, 'results'),
-    fileAppend = ''
+    fileAppend = NULL
   )
   
   # Zip the results
