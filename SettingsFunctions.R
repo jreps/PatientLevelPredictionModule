@@ -8,7 +8,7 @@ createPatientLevelPredictionModuleSpecifications <- function(
   
   specifications <- list(
     module = "PatientLevelPredictionModule",
-    version = "0.0.8",
+    version = "0.0.9",
     remoteRepo = "github.com",
     remoteUsername = "jreps",
     settings = modelDesignList
